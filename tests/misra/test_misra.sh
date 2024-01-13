@@ -52,6 +52,7 @@ cppcheck() {
   fi
 }
 
+
 printf "\n${GREEN}** PANDA F4 CODE **${NC}\n"
 cppcheck -DCAN3 -DPANDA -DSTM32F4 -UPEDAL -DUID_BASE board/main.c
 
