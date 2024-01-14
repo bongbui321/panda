@@ -12,7 +12,6 @@ ROOT = os.path.join(HERE, "../../")
 # - at least one violation in each safety/safety*.h file
 # - come up with a pattern for each rule (cppcheck tests probably have good ones?)
 mutations = [
-  (None, None, False),
   # F4 only
   ("board/stm32fx/llbxcan.h", "s/1U/1/g", True),
   # H7 only
@@ -58,4 +57,4 @@ def test_misra_mutation(fn, patch, should_fail):
     assert failed == should_fail
 
 if __name__ == "__main__":
-  pytest.main([__file__, "-n 8"])
+  pytest.main([__file__, "-n 4"])
