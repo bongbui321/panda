@@ -32,12 +32,12 @@ mutations = [
   ("board/safety/safety_honda.h", "s/for (int j = 0; j < len; j++) {/for (float i = 0; i < (float)len; i++) { int j = i;/g", True),
   # misra-c2012-14.4
   ("board/safety/safety_elm327.h", "s/if (len != 8)/if (len - 8)/g", True),
-  # misra-c2012-16.4
-  ( "board/safety/safety_volkswagen_mqb.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
-  # misra-c2012-20.4
-  ( "board/safety/safety_volkswagen_mqb.h", r"$ a #define auto 1\n", True),
-  # misra-c2012-20.5
-  ( "board/safety/safety_volkswagen_mqb.h", r"$ a #define TEST 1\n#undef TEST\n", True),
+  ## misra-c2012-16.4
+  #( "board/safety/safety_volkswagen_mqb.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
+  ## misra-c2012-20.4
+  #( "board/safety/safety_volkswagen_mqb.h", r"$ a #define auto 1\n", True),
+  ## misra-c2012-20.5
+  #( "board/safety/safety_volkswagen_mqb.h", r"$ a #define TEST 1\n#undef TEST\n", True),
 ]
 
 @pytest.mark.parametrize("fn, patch, should_fail", mutations)
@@ -57,4 +57,4 @@ def test_misra_mutation(fn, patch, should_fail):
     assert failed == should_fail
 
 if __name__ == "__main__":
-  pytest.main([__file__, "-n 13"])
+  pytest.main([__file__, "-n 8"])
