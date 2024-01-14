@@ -12,6 +12,7 @@ ROOT = os.path.join(HERE, "../../")
 # - at least one violation in each safety/safety*.h file
 # - come up with a pattern for each rule (cppcheck tests probably have good ones?)
 mutations = [
+  (None, None, False),
   # F4 only
   ("board/stm32fx/llbxcan.h", "s/1U/1/g", True),
   # H7 only
@@ -29,15 +30,15 @@ mutations = [
   # misra-c2012-13.6
   ("board/safety/safety_defaults.h", "s/bus_fwd = 2;/int temp = 0; if (sizeof(temp++)) { bus_fwd = 2; }/g", True),
   # misra-c2012-14.1
-  ("board/safety/safety_defaults.h", "$ a for (float j = 0; j < (float)1; j++) {continue)",True),
+  ("board/safety/safety_elm327.h", "$ a for (float j = 0; j < (float)1; j++) {continue)",True),
   # misra-c2012-14.4
-  ("board/safety/safety_defaults.h", "$ a int len = 10; if (len - 8) {;}", True),
+  ("board/safety/safety_elm327.h", "$ a int len = 10; if (len - 8) {;}", True),
   # misra-c2012-16.4
-  ( "board/safety/safety_defaults.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
+  ( "board/safety/safety_elm327.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
   # misra-c2012-20.4
-  ( "board/safety/safety_defaults.h", r"$ a #define auto 1\n", True),
+  ( "board/safety/safety_elm327.h", r"$ a #define auto 1\n", True),
   # misra-c2012-20.5
-  ( "board/safety/safety_defaults.h", r"$ a #define TEST 1\n#undef TEST\n", True),
+  ( "board/safety/safety_elm327.h", r"$ a #define TEST 1\n#undef TEST\n", True),
 ]
 
 @pytest.mark.parametrize("fn, patch, should_fail", mutations)
@@ -57,4 +58,4 @@ def test_misra_mutation(fn, patch, should_fail):
     assert failed == should_fail
 
 if __name__ == "__main__":
-  pytest.main([__file__, "-n 4"])
+  pytest.main([__file__, "-n 8"])
