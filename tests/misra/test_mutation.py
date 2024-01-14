@@ -21,7 +21,7 @@ mutations = [
   # misra-c2012-12.1
   ("board/safety/safety_chrysler.h", "s/(chrysler_platform == CHRYSLER_PACIFICA)/chrysler_platform == CHRYSLER_PACIFICA/g", True),
   # misra-c2012-13.3
-  ("board/safety/safety_defaults.h", "s/bus_fwd = 2;/int temp = 0;temp = bus_fwd++ + 2;bus_fwd = temp;/g", True),
+  ("board/safety/safety_hyundai_canfd.h", "s/bus_fwd = 2;/int temp = 0;temp = bus_fwd++ + 2;bus_fwd = temp;/g", True),
   # misra-c2012-13.4
   ("board/safety/safety_defaults.h", "s/bus_fwd = 2;/int x; int y; bus_fwd = (x=2) && (y=2);/g", True),
   # misra-c2012-13.5
@@ -29,15 +29,15 @@ mutations = [
   # misra-c2012-13.6
   ("board/safety/safety_defaults.h", "s/bus_fwd = 2;/int temp = 0; if (sizeof(temp++)) { bus_fwd = 2; }/g", True),
   # misra-c2012-14.1
-  ("board/safety/safety_elm327.h", "$ a for (float j = 0; j < (float)1; j++) {continue)",True),
+  ("board/safety/safety_honda.h", "s/for (int j = 0; j < len; j++) {/for (float i = 0; i < (float)len; i++) { int j = i;/g", True),
   # misra-c2012-14.4
-  ("board/safety/safety_elm327.h", "$ a int len = 10; if (len - 8) {;}", True),
+  ("board/safety/safety_elm327.h", "s/if (len != 8)/if (len - 8)/g", True),
   # misra-c2012-16.4
-  ( "board/safety/safety_elm327.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
+  ( "board/safety/safety_volkswagen_mqb.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
   # misra-c2012-20.4
-  ( "board/safety/safety_elm327.h", r"$ a #define auto 1\n", True),
+  ( "board/safety/safety_volkswagen_mqb.h", r"$ a #define auto 1\n", True),
   # misra-c2012-20.5
-  ( "board/safety/safety_elm327.h", r"$ a #define TEST 1\n#undef TEST\n", True),
+  ( "board/safety/safety_volkswagen_mqb.h", r"$ a #define TEST 1\n#undef TEST\n", True),
 ]
 
 @pytest.mark.parametrize("fn, patch, should_fail", mutations)
