@@ -15,7 +15,7 @@ const uint8_t PANDA_BUS_CNT = 4U;
   #define CANPACKET_DATA_SIZE_MAX 8U
 #endif
 
-typedef struct {
+typedef struct __attribute__((packed, aligned(4))) CANPacket {
   unsigned char reserved : 1;
   unsigned char bus : 3;
   unsigned char data_len_code : 4;  // lookup length with dlc_to_len
@@ -25,7 +25,7 @@ typedef struct {
   unsigned int addr : 29;
   unsigned char checksum;
   unsigned char data[CANPACKET_DATA_SIZE_MAX];
-} __attribute__((packed, aligned(4))) CANPacket_t;
+} CANPacket_t;
 
 const unsigned char dlc_to_len[] = {0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 12U, 16U, 20U, 24U, 32U, 48U, 64U};
 
