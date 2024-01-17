@@ -24,7 +24,7 @@ if ! cmp -s new_table coverage_table; then
 fi
 
 cd $PANDA_DIR
-if [ ! -z "${CI}" ]; then
+if [ -z "${CI}" ]; then
   scons -j8
 fi
 
