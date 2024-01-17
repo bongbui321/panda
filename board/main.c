@@ -29,8 +29,6 @@
 #include "can_comms.h"
 #include "main_comms.h"
 
-void test(int len) { if (len - 8) {;} }
-
 
 // ********************* Serial debugging *********************
 
