@@ -37,8 +37,8 @@ cppcheck() {
           -I $gcc_inc "$(arm-none-eabi-gcc -print-file-name=include)" \
           --suppressions-list=$DIR/suppressions.txt --suppress=*:*inc/* \
           --suppress=*:*include/* --error-exitcode=2 --addon=misra \
-          --cppcheck-build-dir=$build_dir \
           "$@"
+          #--cppcheck-build-dir=$build_dir \
 }
 
 printf "\n${GREEN}** PANDA F4 CODE **${NC}\n"
