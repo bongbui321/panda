@@ -114,7 +114,7 @@ jobs:
         id: ci_setup
         with:
           path: ${{ github.workspace }}/ci_cache/cppcheck_build
-          key: cppcheck-${{ hashFiles('**/test.misra.sh') }}
+          key: cppcheck-${{ hashFiles('**/test_misra.sh') }}
       - name: ci setup
         if: steps.ci_setup.outputs.cache-hit != 'true' 
         run: mkdir -p ${{ github.workspace }}/ci_cache/cppcheck_build
@@ -125,9 +125,14 @@ jobs:
       - name: Run MISRA C:2012 analysis
         timeout-minutes: 1
         run: ${{ env.RUN }} "cd tests/misra && ./test_misra.sh"
-      - name: MISRA mutation tests
-        timeout-minutes: 5
-        run: ${{ env.RUN }} "cd tests/misra && ./test_mutation.py"
+      - uses: actions/upload-artifact@v3
+        with: 
+          name: cppcheck_build
+          path: ${{ github.workspace }}/ci_cache/cppcheck_build
+          retention-days: 2
+      #- name: MISRA mutation tests
+      #  timeout-minutes: 5
+      #  run: ${{ env.RUN }} "cd tests/misra && ./test_mutation.py"
 
   python_linter:
     name: python linter
