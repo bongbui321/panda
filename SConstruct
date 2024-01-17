@@ -12,7 +12,7 @@ AddOption('--coverage',
           action='store_true',
           help='build with test coverage options')
 
-cache_dir = "/tmp/scons_cache"
+cache_dir = "/tmp/ci_cache/scons_cache"
 CacheDir(cache_dir)
 Clean(["."], cache_dir)
 

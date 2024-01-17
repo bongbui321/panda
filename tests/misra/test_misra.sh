@@ -28,7 +28,7 @@ scons -j8
 
 cppcheck() {
   hashed_args=$(echo -n "$@$DIR" | md5sum | awk '{print $1}')
-  build_dir=/tmp/cppcheck_build/$hashed_args
+  build_dir=/tmp/ci_cache/cppcheck_build/$hashed_args
   mkdir -p $build_dir
 
   $CPPCHECK_DIR/cppcheck --enable=all --force --inline-suppr -I $PANDA_DIR/board/ \
