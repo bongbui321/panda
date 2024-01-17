@@ -131,7 +131,6 @@ jobs:
           name: cppcheck_build
           path: ${{ github.workspace }}/ci_cache/cppcheck_build
           retention-days: 2
-
       #- name: MISRA mutation tests
       #  timeout-minutes: 5
       #  run: ${{ env.RUN }} "cd tests/misra && ./test_mutation.py"
