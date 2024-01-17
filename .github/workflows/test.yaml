@@ -129,6 +129,7 @@ jobs:
         timeout-minutes: 3
         run: ${{ env.RUN }} "cd tests/misra && ./test_mutation.py"
 
+
   python_linter:
     name: python linter
     runs-on: ubuntu-20.04
