@@ -35,11 +35,11 @@ mutations = [
   # misra-c2012-14.4
   ("board/safety/safety_elm327.h", "$ a void test(int len) { if (len - 8) {;} }", True),
   # misra-c2012-16.4
-  ( "board/safety/safety_elm327.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
+  ("board/safety/safety_elm327.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
   # misra-c2012-20.4
-  ( "board/safety/safety_elm327.h", r"$ a #define auto 1\n", True),
+  ("board/safety/safety_elm327.h", r"$ a #define auto 1\n", True),
   # misra-c2012-20.5
-  ( "board/safety/safety_elm327.h", r"$ a #define TEST 1\n#undef TEST\n", True),
+  ("board/safety/safety_elm327.h", r"$ a #define TEST 1\n#undef TEST\n", True),
 ]
 
 @pytest.mark.parametrize("fn, patch, should_fail", mutations)
