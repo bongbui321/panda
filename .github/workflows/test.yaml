@@ -125,6 +125,7 @@ jobs:
       - name: Run MISRA C:2012 analysis
         timeout-minutes: 1
         run: ${{ env.RUN }} "cd tests/misra && CI=1 ./test_misra.sh"
+
       #- name: MISRA mutation tests
       #  timeout-minutes: 5
       #  run: ${{ env.RUN }} "cd tests/misra && ./test_mutation.py"
