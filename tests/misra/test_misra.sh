@@ -48,6 +48,4 @@ cppcheck -DCAN3 -DPANDA -DSTM32H7 -UPEDAL -DUID_BASE $PANDA_DIR/board/main.c
 printf "\n${GREEN}** PEDAL CODE **${NC}\n"
 cppcheck -UCAN3 -UPANDA -DSTM32F2 -DPEDAL -UUID_BASE $PANDA_DIR/board/pedal/main.c
 
-$CPPCHECK_DIR/cppcheck --version
-
 printf "\n${GREEN}Success!${NC} took $SECONDS seconds\n"
