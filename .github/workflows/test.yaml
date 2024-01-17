@@ -125,7 +125,7 @@ jobs:
       - name: Run MISRA C:2012 analysis
         timeout-minutes: 1
         run: ${{ env.RUN }} "cd tests/misra && ./test_misra.sh"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with: 
           name: cppcheck_build
           path: ${{ github.workspace }}/ci_cache/cppcheck_build
