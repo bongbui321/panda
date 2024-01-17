@@ -14,7 +14,7 @@ AddOption('--coverage',
 
 cache_dir = "/tmp/scons_cache"
 CacheDir(cache_dir)
-#Clean(["."], cache_dir)
+Clean(["."], cache_dir)
 
 # panda fw & test files
 SConscript('SConscript')
