@@ -27,7 +27,10 @@ def objcopy(source, target, env, for_signature):
 
 def get_version(builder, build_type):
   try:
-    git = subprocess.check_output(["git", "rev-parse", "--short=8", "HEAD"], encoding='utf8').strip()
+    if os.getenv("CI"):
+      git = "f64ba246"
+    else:
+      git = subprocess.check_output(["git", "rev-parse", "--short=8", "HEAD"], encoding='utf8').strip()
   except subprocess.CalledProcessError:
     git = "unknown"
   return f"{builder}-{git}-{build_type}"
