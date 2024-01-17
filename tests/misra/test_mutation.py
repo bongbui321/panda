@@ -25,21 +25,21 @@ mutations = [
   # misra-c2012-13.3
   ("board/safety/safety_elm327.h", "$ a void test(int tmp) { int tmp2 = tmp++ + 2; if (tmp2) {;}}", True),
   # misra-c2012-13.4
-  ("board/safety/safety_defaults.h", "$ a int test(int x, int y) { return (x=2) && (y=2); }", True),
+  ("board/pedal/main.c", "$ a int test(int x, int y) { return (x=2) && (y=2); }", True),
   # misra-c2012-13.5
-  ("board/safety/safety_defaults.h", "$ a void test(int tmp) { if (true && tmp++) {;} }", True),
+  ("board/pedal/main.c", "$ a void test(int tmp) { if (true && tmp++) {;} }", True),
   # misra-c2012-13.6
-  ("board/safety/safety_elm327.h", "$ a void test(int tmp) { if (sizeof(tmp++)) {;} }", True),
+  ("board/pedal/main.c", "$ a void test(int tmp) { if (sizeof(tmp++)) {;} }", True),
   # misra-c2012-14.1
-  ("board/safety/safety_elm327.h", "$ a void test(float len) { for (float j = 0; j < len; j++) {;} }",True),
+  ("board/pedal/main.c", "$ a void test(float len) { for (float j = 0; j < len; j++) {;} }",True),
   # misra-c2012-14.4
-  ("board/safety/safety_elm327.h", "$ a void test(int len) { if (len - 8) {;} }", True),
+  ("board/pedal/main.c", "$ a void test(int len) { if (len - 8) {;} }", True),
   # misra-c2012-16.4
-  ( "board/safety/safety_elm327.h", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
+  ( "board/pedal/main.c", r"$ a void test(int temp) {switch (temp) { case 1: ; }}\n", True),
   # misra-c2012-20.4
-  ( "board/safety/safety_elm327.h", r"$ a #define auto 1\n", True),
+  ( "board/pedal/main.c", r"$ a #define auto 1\n", True),
   # misra-c2012-20.5
-  ( "board/safety/safety_elm327.h", r"$ a #define TEST 1\n#undef TEST\n", True),
+  ( "board/pedal/main.c", r"$ a #define TEST 1\n#undef TEST\n", True),
 ]
 
 @pytest.mark.parametrize("fn, patch, should_fail", mutations)
