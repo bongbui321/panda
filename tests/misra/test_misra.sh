@@ -26,6 +26,7 @@ if [ -z "${CI}" ]; then
 fi
 
 cd $PANDA_DIR
+
 scons -j8
 
 cppcheck() {
