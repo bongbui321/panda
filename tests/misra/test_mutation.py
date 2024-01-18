@@ -13,6 +13,7 @@ ROOT = os.path.join(HERE, "../../")
 # - at least one violation in each safety/safety*.h file
 # - come up with a pattern for each rule (cppcheck tests probably have good ones?)
 mutations = [
+  (None, None, False),
   # F4 only
   ("board/main.c", "1i int test(int tmp, float tmp2) { return tmp - tmp2; }", True),
   # H7 only
