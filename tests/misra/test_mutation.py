@@ -13,7 +13,6 @@ ROOT = os.path.join(HERE, "../../")
 # - at least one violation in each safety/safety*.h file
 # - come up with a pattern for each rule (cppcheck tests probably have good ones?)
 mutations = [
-  (None, None, False),
   # F4 only
   ("board/main.c", "1i int test(int tmp, float tmp2) { return tmp - tmp2; }", True),
   # H7 only
@@ -40,6 +39,7 @@ mutations = [
   ( "board/main.c", r"1i #define auto 1\n", True),
   # misra-c2012-20.5
   ( "board/main.c", r"1i #define TEST 1\n#undef TEST\n", True),
+  (None, None, False),
 ]
 
 @pytest.mark.parametrize("fn, patch, should_fail", mutations)
