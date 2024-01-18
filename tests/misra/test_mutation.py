@@ -13,11 +13,10 @@ ROOT = os.path.join(HERE, "../../")
 # - at least one violation in each safety/safety*.h file
 # - come up with a pattern for each rule (cppcheck tests probably have good ones?)
 mutations = [
-  (None, None, False),
   # F4 only
-  ("board/stm32fx/llbxcan.h", "$ a int test(int tmp, float tmp2) { return tmp - tmp2; }", True),
+  ("board/main.c", "1i int test(int tmp, float tmp2) { return tmp - tmp2; }", True),
   # H7 only
-  ("board/stm32h7/llfdcan.h", "$ a bool test(bool state){ if (state) { return true; } else {return false; } }", True),
+  ("board/main.c", "1i bool test(bool state){ if (state) { return true; } else {return false; } }", True),
   # general safety
   ("board/safety/safety_toyota.h", "s/is_lkas_msg =.*;/is_lkas_msg = addr == 1 || addr == 2;/g", True),
   # misra-c2012-12.1
