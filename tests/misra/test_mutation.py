@@ -19,7 +19,7 @@ mutations = [
   # H7 only
   ("board/stm32h7/llfdcan.h", "$ a bool test(bool state){ if (state) { return true; } else {return false; } }", True),
   # general safety
-  ("board/main.c", "s/is_lkas_msg =.*;/is_lkas_msg = addr == 1 || addr == 2;/g", True),
+  ("board/safety/safety_toyota.h", "s/is_lkas_msg =.*;/is_lkas_msg = addr == 1 || addr == 2;/g", True),
   # misra-c2012-12.1
   ("board/main.c", "1i bool test(int tmp) { return tmp == 8 ? true : false; }", True),
   # misra-c2012-13.3
