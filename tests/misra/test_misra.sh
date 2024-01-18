@@ -26,9 +26,7 @@ if [ -z "${CI}" ]; then
 fi
 
 cd $PANDA_DIR
-if [ -z "${CI}" ]; then
-  scons -j8
-fi
+scons -j8
 
 cppcheck() {
   hashed_args=$(echo -n "$@$DIR" | md5sum | awk '{print $1}')
