@@ -37,7 +37,7 @@ class TestVolkswagenPqSafety(common.PandaCarSafetyTest, common.DriverTorqueSteer
     if cls.__name__ == "TestVolkswagenPqSafety":
       cls.packer = None
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def _set_prev_torque(self, t):
     self.safety.set_desired_torque_last(t)

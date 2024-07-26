@@ -1,5 +1,3 @@
-import pytest
-
 import panda.tests.safety.common as common
 
 from panda import Panda

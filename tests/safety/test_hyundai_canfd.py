@@ -43,7 +43,7 @@ class TestHyundaiCanfdBase(HyundaiButtonBase, common.PandaCarSafetyTest, common.
     if cls.__name__ == "TestHyundaiCanfdBase":
       cls.packer = None
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def _torque_driver_msg(self, torque):
     values = {"STEERING_COL_TORQUE": torque}
@@ -96,7 +96,7 @@ class TestHyundaiCanfdHDA1Base(TestHyundaiCanfdBase):
     if cls.__name__ in ("TestHyundaiCanfdHDA1", "TestHyundaiCanfdHDA1AltButtons"):
       cls.packer = None
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def setup_method(self):
     self.packer = CANPackerPanda("hyundai_canfd")
@@ -248,7 +248,7 @@ class TestHyundaiCanfdHDA1Long(HyundaiLongitudinalBase, TestHyundaiCanfdHDA1Base
   def setup_class(cls):
     if cls.__name__ == "TestHyundaiCanfdHDA1Long":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def setup_method(self):
     self.packer = CANPackerPanda("hyundai_canfd")

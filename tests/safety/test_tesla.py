@@ -27,7 +27,7 @@ class TestTeslaSafety(common.PandaCarSafetyTest):
 
   def setup_method(self):
     self.packer = None
-    raise pytest.skip()
+    pytest.skip()
 
   def _speed_msg(self, speed):
     values = {"DI_vehicleSpeed": speed / 0.447}
@@ -121,7 +121,7 @@ class TestTeslaRavenSteeringSafety(TestTeslaSteeringSafety):
 
 class TestTeslaLongitudinalSafety(TestTeslaSafety):
   def setup_method(self):
-    raise pytest.skip()
+    pytest.skip()
 
   def test_no_aeb(self):
     for aeb_event in range(4):

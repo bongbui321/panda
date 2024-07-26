@@ -39,7 +39,7 @@ class TestVolkswagenMqbSafety(common.PandaCarSafetyTest, common.DriverTorqueStee
     if cls.__name__ == "TestVolkswagenMqbSafety":
       cls.packer = None
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   # Wheel speeds _esp_19_msg
   def _speed_msg(self, speed):

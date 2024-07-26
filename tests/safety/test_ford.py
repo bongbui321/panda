@@ -98,7 +98,7 @@ class TestFordSafetyBase(common.PandaCarSafetyTest):
   @classmethod
   def setup_class(cls):
     if cls.__name__ == "TestFordSafetyBase":
-      raise pytest.skip()
+      pytest.skip()
 
   def _set_prev_desired_angle(self, t):
     t = round(t * self.DEG_TO_CAN)
@@ -402,7 +402,7 @@ class TestFordLongitudinalSafetyBase(TestFordSafetyBase):
   @classmethod
   def setup_class(cls):
     if cls.__name__ == "TestFordLongitudinalSafetyBase":
-      raise pytest.skip()
+      pytest.skip()
 
   # ACC command
   def _acc_command_msg(self, gas: float, brake: float, cmbb_deny: bool = False):

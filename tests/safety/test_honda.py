@@ -185,7 +185,7 @@ class HondaBase(common.PandaCarSafetyTest):
     if cls.__name__.endswith("Base"):
       cls.packer = None
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def _powertrain_data_msg(self, cruise_on=None, brake_pressed=None, gas_pressed=None):
     # preserve the state

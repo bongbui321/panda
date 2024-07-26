@@ -46,7 +46,7 @@ def add_regen_tests(cls):
       def _regen_test(self):
         # only for safety modes with a regen message
         if self._user_regen_msg(0) is None:
-          raise pytest.skip("Safety mode implements no _user_regen_msg")
+          pytest.skip("Safety mode implements no _user_regen_msg")
 
         getattr(self, brake_func)(self._user_regen_msg, self.safety.get_regen_braking_prev)
       return _regen_test
@@ -61,9 +61,9 @@ class TestPandaSafetyBase:
 
   @classmethod
   def setup_class(cls):
-    if cls.__name__ == "PandaSafetyTestBase":
+    if cls.__name__ == "TestPandaSafetyBase":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def _reset_safety_hooks(self):
     self.safety.set_safety_hooks(self.safety.get_current_safety_mode(),
@@ -128,7 +128,7 @@ class LongitudinalAccelSafetyTest(TestPandaSafetyBase, abc.ABC):
   def setup_class(cls):
     if cls.__name__ == "LongitudinalAccelSafetyTest":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   @abc.abstractmethod
   def _accel_msg(self, accel: float):
@@ -157,7 +157,7 @@ class LongitudinalAccelSafetyTest(TestPandaSafetyBase, abc.ABC):
           assert should_tx == self._tx(self._accel_msg(accel))
 
 
-class LongitudinalGasBrakeSafetyTest(PandaSafetyTestBase, abc.ABC):
+class LongitudinalGasBrakeSafetyTest(TestPandaSafetyBase, abc.ABC):
 
   MIN_BRAKE: int = 0
   MAX_BRAKE: int | None = None
@@ -190,7 +190,7 @@ class LongitudinalGasBrakeSafetyTest(PandaSafetyTestBase, abc.ABC):
     self._generic_limit_safety_check(self._send_gas_msg, self.MIN_GAS, self.MAX_GAS, 0, self.MAX_POSSIBLE_GAS, 1, self.INACTIVE_GAS)
 
 
-class TorqueSteeringSafetyTestBase(PandaSafetyTestBase, abc.ABC):
+class TorqueSteeringSafetyTestBase(TestPandaSafetyBase, abc.ABC):
 
   MAX_RATE_UP = 0
   MAX_RATE_DOWN = 0
@@ -204,7 +204,7 @@ class TorqueSteeringSafetyTestBase(PandaSafetyTestBase, abc.ABC):
   def setup_class(cls):
     if cls.__name__ == "TorqueSteeringSafetyTestBase":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   @abc.abstractmethod
   def _torque_cmd_msg(self, torque, steer_req=1):
@@ -241,7 +241,7 @@ class TorqueSteeringSafetyTestBase(PandaSafetyTestBase, abc.ABC):
   def test_steer_req_bit(self):
     """Asserts all torque safety modes check the steering request bit"""
     if self.NO_STEER_REQ_BIT:
-      raise pytest.skip("No steering request bit")
+      pytest.skip("No steering request bit")
 
     self.safety.set_controls_allowed(True)
     self._set_prev_torque(self.MAX_TORQUE)
@@ -261,7 +261,7 @@ class SteerRequestCutSafetyTest(TorqueSteeringSafetyTestBase, abc.ABC):
   def setup_class(cls):
     if cls.__name__ == "SteerRequestCutSafetyTest":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   # Safety around steering request bit mismatch tolerance
   MIN_VALID_STEERING_FRAMES: int
@@ -371,7 +371,7 @@ class DriverTorqueSteeringSafetyTest(TorqueSteeringSafetyTestBase, abc.ABC):
   def setup_class(cls):
     if cls.__name__ == "DriverTorqueSteeringSafetyTest":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   @abc.abstractmethod
   def _torque_driver_msg(self, torque):
@@ -468,7 +468,7 @@ class MotorTorqueSteeringSafetyTest(TorqueSteeringSafetyTestBase, abc.ABC):
   def setup_class(cls):
     if cls.__name__ == "MotorTorqueSteeringSafetyTest":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   @abc.abstractmethod
   def _torque_meas_msg(self, torque):
@@ -577,7 +577,7 @@ class MotorTorqueSteeringSafetyTest(TorqueSteeringSafetyTestBase, abc.ABC):
     assert self.safety.get_torque_meas_max() == 0
 
 
-class AngleSteeringSafetyTest(PandaSafetyTestBase):
+class AngleSteeringSafetyTest(TestPandaSafetyBase):
 
   DEG_TO_CAN: float
   ANGLE_RATE_BP: list[float]
@@ -588,7 +588,7 @@ class AngleSteeringSafetyTest(PandaSafetyTestBase):
   def setup_class(cls):
     if cls.__name__ == "AngleSteeringSafetyTest":
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   @abc.abstractmethod
   def _speed_msg(self, speed):
@@ -698,7 +698,7 @@ class PandaSafetyTest(TestPandaSafetyBase):
   def setup_class(cls):
     if cls.__name__ == "PandaSafetyTest" or cls.__name__.endswith('Base'):
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   # ***** standard tests for all safety modes *****
 
@@ -817,7 +817,7 @@ class PandaCarSafetyTest(PandaSafetyTest):
   def setup_class(cls):
     if cls.__name__ == "PandaCarSafetyTest" or cls.__name__.endswith('Base'):
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   @abc.abstractmethod
   def _user_brake_msg(self, brake):

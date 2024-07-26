@@ -91,7 +91,7 @@ class TestGmSafetyBase(common.PandaCarSafetyTest, common.DriverTorqueSteeringSaf
     if cls.__name__ == "TestGmSafetyBase":
       cls.packer = None
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def setup_method(self):
     self.packer = CANPackerPanda("gm_global_a_powertrain_generated")
@@ -170,7 +170,7 @@ class TestGmCameraSafetyBase(TestGmSafetyBase):
     if cls.__name__ == "TestGmCameraSafetyBase":
       cls.packer = None
       cls.safety = None
-      raise pytest.skip()
+      pytest.skip()
 
   def _user_brake_msg(self, brake):
     values = {"BrakePressed": brake}
