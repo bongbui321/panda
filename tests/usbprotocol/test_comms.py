@@ -99,7 +99,7 @@ class TestPandaComms:
       assert m == test_msg, "message buffer should contain valid test messages"
 
 
-  @pytest.mark.parameterize("bus", range(3))
+  @pytest.mark.parametrize("bus", range(3))
   def test_can_send_usb(self, bus):
     lpp.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
 
