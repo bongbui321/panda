@@ -26,7 +26,8 @@ def random_can_messages(n, bus=None):
 
 class TestPandaComms:
   def test_tx_queues(self):
-    lpp = libpanda_py.ffi.dlopen(libpanda_py.libpanda_fn)
+    ffi = libpanda_py.gen_new_ffi()
+    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
     #lpp = libpanda_py.libpanda
     TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
     lpp.comms_can_reset()
@@ -45,7 +46,8 @@ class TestPandaComms:
   def test_comms_reset_rx(self):
     # store some test messages in the queue
 
-    lpp = libpanda_py.ffi.dlopen(libpanda_py.libpanda_fn)
+    ffi = libpanda_py.gen_new_ffi()
+    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
     #lpp = libpanda_py.libpanda
     TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
     lpp.comms_can_reset()
@@ -79,7 +81,8 @@ class TestPandaComms:
       assert m == test_msg, "message buffer should contain valid test messages"
 
   def test_comms_reset_tx(self):
-    lpp = libpanda_py.ffi.dlopen(libpanda_py.libpanda_fn)
+    ffi = libpanda_py.gen_new_ffi()
+    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
     TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
     lpp.comms_can_reset()
 
@@ -111,7 +114,8 @@ class TestPandaComms:
 
 
   def test_can_send_usb(self, subtests):
-    lpp = libpanda_py.ffi.dlopen(libpanda_py.libpanda_fn)
+    ffi = libpanda_py.gen_new_ffi()
+    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
     TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
     lpp.comms_can_reset()
 
@@ -139,7 +143,8 @@ class TestPandaComms:
           assert queue_msgs == msgs
 
   def test_can_receive_usb(self):
-    lpp = libpanda_py.ffi.dlopen(libpanda_py.libpanda_fn)
+    ffi = libpanda_py.gen_new_ffi()
+    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
     lpp.comms_can_reset()
 
     msgs = random_can_messages(50000)
