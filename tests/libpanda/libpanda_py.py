@@ -84,12 +84,12 @@ class Panda(PandaSafety, Protocol):
   def set_safety_hooks(self, mode: int, param: int) -> int: ...
 
 
-libpanda: Panda = ffi.dlopen(libpanda_fn)
+#libpanda: Panda = ffi.dlopen(libpanda_fn)
 
 
 # helpers
 
-def make_CANPacket(addr: int, bus: int, dat, libpanda):
+def make_CANPacket(addr: int, bus: int, dat, libpanda, ffi):
   ret = ffi.new('CANPacket_t *')
   ret[0].extended = 1 if addr >= 0x800 else 0
   ret[0].addr = addr
