@@ -87,7 +87,7 @@ libpanda: Panda = ffi.dlopen(libpanda_fn)
 
 # helpers
 
-def make_CANPacket(libpanda: Panda, addr: int, bus: int, dat):
+def make_CANPacket(addr: int, bus: int, dat):
   ret = ffi.new('CANPacket_t *')
   ret[0].extended = 1 if addr >= 0x800 else 0
   ret[0].addr = addr
