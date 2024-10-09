@@ -79,7 +79,7 @@ class Panda(PandaSafety, Protocol):
   def set_safety_hooks(self, mode: int, param: int) -> int: ...
 
 
-libpanda: Panda = ffi.dlopen(libpanda_fn)
+#libpanda: Panda = ffi.dlopen(libpanda_fn)
 
 
 # helpers
