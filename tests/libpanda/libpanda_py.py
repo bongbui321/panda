@@ -53,11 +53,12 @@ def gen_new_ffi():
   void comms_can_reset(void);
   uint32_t can_slots_empty(can_ring *q);
   """)
+
   setup_safety_helpers(ffi)
   return ffi
 
-ffi = gen_new_ffi()
-setup_safety_helpers(ffi)
+#ffi = gen_new_ffi()
+#setup_safety_helpers(ffi)
 
 class CANPacket:
   reserved: int
