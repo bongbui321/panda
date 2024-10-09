@@ -53,6 +53,7 @@ def gen_new_ffi():
   void comms_can_reset(void);
   uint32_t can_slots_empty(can_ring *q);
   """)
+  setup_safety_helpers(ffi)
   return ffi
 
 ffi = gen_new_ffi()
@@ -87,7 +88,7 @@ libpanda: Panda = ffi.dlopen(libpanda_fn)
 
 # helpers
 
-def make_CANPacket(addr: int, bus: int, dat):
+def make_CANPacket(addr: int, bus: int, dat, libpanda):
   ret = ffi.new('CANPacket_t *')
   ret[0].extended = 1 if addr >= 0x800 else 0
   ret[0].addr = addr
