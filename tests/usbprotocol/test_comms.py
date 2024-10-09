@@ -36,7 +36,7 @@ class TestPandaComms:
       message = (0x100, b"test", bus)
 
       can_pkt_tx = libpanda_py.make_CANPacket(message[0], message[2], message[1], lpp, ffi)
-      can_pkt_rx = libpanda_py.ffi.new('CANPacket_t *')
+      can_pkt_rx = ffi.new('CANPacket_t *')
 
       assert lpp.can_push(TX_QUEUES[bus], can_pkt_tx), "CAN push failed"
       assert lpp.can_pop(TX_QUEUES[bus], can_pkt_rx), "CAN pop failed"
@@ -59,7 +59,7 @@ class TestPandaComms:
 
     # read a small chunk such that we have some overflow
     TINY_CHUNK_SIZE = 6
-    dat = libpanda_py.ffi.new(f"uint8_t[{TINY_CHUNK_SIZE}]")
+    dat = ffi.new(f"uint8_t[{TINY_CHUNK_SIZE}]")
     rx_len = lpp.comms_can_read(dat, TINY_CHUNK_SIZE)
     assert rx_len == TINY_CHUNK_SIZE, "comms_can_read returned too little data"
 
@@ -71,7 +71,7 @@ class TestPandaComms:
 
     # read a large chunk, which should now contain valid messages
     LARGE_CHUNK_SIZE = 512
-    dat = libpanda_py.ffi.new(f"uint8_t[{LARGE_CHUNK_SIZE}]")
+    dat = ffi.new(f"uint8_t[{LARGE_CHUNK_SIZE}]")
     rx_len = lpp.comms_can_read(dat, LARGE_CHUNK_SIZE)
     assert rx_len == LARGE_CHUNK_SIZE, "comms_can_read returned too little data"
 
@@ -104,7 +104,7 @@ class TestPandaComms:
 
     # read the messages from the queue and make sure they're valid
     queue_msgs = []
-    pkt = libpanda_py.ffi.new('CANPacket_t *')
+    pkt = ffi.new('CANPacket_t *')
     while lpp.can_pop(TX_QUEUES[0], pkt):
       queue_msgs.append(unpackage_can_msg(pkt))
 
@@ -135,7 +135,7 @@ class TestPandaComms:
 
           # Check that they ended up in the right buffers
           queue_msgs = []
-          pkt = libpanda_py.ffi.new('CANPacket_t *')
+          pkt = ffi.new('CANPacket_t *')
           while lpp.can_pop(TX_QUEUES[bus], pkt):
             queue_msgs.append(unpackage_can_msg(pkt))
 
@@ -159,7 +159,7 @@ class TestPandaComms:
 
       # Simulate USB bulk IN chunks
       MAX_TRANSFER_SIZE = 16384
-      dat = libpanda_py.ffi.new(f"uint8_t[{CHUNK_SIZE}]")
+      dat = ffi.new(f"uint8_t[{CHUNK_SIZE}]")
       while True:
         buf = b""
         while len(buf) < MAX_TRANSFER_SIZE:
