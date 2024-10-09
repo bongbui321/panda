@@ -34,7 +34,7 @@ class TestPandaComms:
     for bus in range(len(TX_QUEUES)):
       message = (0x100, b"test", bus)
 
-      can_pkt_tx = libpanda_py.make_CANPacket(message[0], message[2], message[1])
+      can_pkt_tx = libpanda_py.make_CANPacket(lpp, message[0], message[2], message[1])
       can_pkt_rx = libpanda_py.ffi.new('CANPacket_t *')
 
       assert lpp.can_push(TX_QUEUES[bus], can_pkt_tx), "CAN push failed"
@@ -52,7 +52,7 @@ class TestPandaComms:
 
     test_msg = (0x100, b"test", 0)
     for _ in range(100):
-      can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1])
+      can_pkt_tx = libpanda_py.make_CANPacket(lpp, test_msg[0], test_msg[2], test_msg[1])
       lpp.can_push(lpp.rx_q, can_pkt_tx)
 
     # read a small chunk such that we have some overflow
@@ -143,7 +143,7 @@ class TestPandaComms:
     lpp.comms_can_reset()
 
     msgs = random_can_messages(50000)
-    packets = [libpanda_py.make_CANPacket(m[0], m[2], m[1]) for m in msgs]
+    packets = [libpanda_py.make_CANPacket(lpp, m[0], m[2], m[1]) for m in msgs]
 
     rx_msgs = []
     overflow_buf = b""
