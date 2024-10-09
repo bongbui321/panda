@@ -58,7 +58,6 @@ setup(
       "pytest-timeout",
       "pytest-randomly",
       "pytest-subtests",
-      "pytest-order",
       "parameterized",
       "pre-commit",
       "numpy",
