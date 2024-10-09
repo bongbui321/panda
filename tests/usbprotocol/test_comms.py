@@ -27,7 +27,7 @@ def random_can_messages(n, bus=None):
 class TestPandaComms:
   def setup_method(self):
     self.lpp = libpanda_py.libpanda
-    self.TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
+    self.TX_QUEUES = (self.lpp.tx1_q, self.lpp.tx2_q, self.lpp.tx3_q)
     self.lpp.comms_can_reset()
 
   def test_tx_queues(self):
