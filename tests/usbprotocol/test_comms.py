@@ -25,46 +25,50 @@ def random_can_messages(n, bus=None):
 
 
 class TestPandaComms:
-  def setup_method(self):
-    self.lpp = libpanda_py.libpanda
-    self.TX_QUEUES = (self.lpp.tx1_q, self.lpp.tx2_q, self.lpp.tx3_q)
-    self.lpp.comms_can_reset()
-
   def test_tx_queues(self):
-    for bus in range(len(self.TX_QUEUES)):
+    lpp = libpanda_py.libpanda
+    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
+    lpp.comms_can_reset()
+
+    for bus in range(len(TX_QUEUES)):
       message = (0x100, b"test", bus)
 
       can_pkt_tx = libpanda_py.make_CANPacket(message[0], message[2], message[1])
       can_pkt_rx = libpanda_py.ffi.new('CANPacket_t *')
 
-      assert self.lpp.can_push(self.TX_QUEUES[bus], can_pkt_tx), "CAN push failed"
-      assert self.lpp.can_pop(self.TX_QUEUES[bus], can_pkt_rx), "CAN pop failed"
+      assert lpp.can_push(TX_QUEUES[bus], can_pkt_tx), "CAN push failed"
+      assert lpp.can_pop(TX_QUEUES[bus], can_pkt_rx), "CAN pop failed"
 
       assert unpackage_can_msg(can_pkt_rx) == message
 
   def test_comms_reset_rx(self):
     # store some test messages in the queue
+
+    lpp = libpanda_py.libpanda
+    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
+    lpp.comms_can_reset()
+
     test_msg = (0x100, b"test", 0)
     for _ in range(100):
       can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1])
-      self.lpp.can_push(self.lpp.rx_q, can_pkt_tx)
+      lpp.can_push(lpp.rx_q, can_pkt_tx)
 
     # read a small chunk such that we have some overflow
     TINY_CHUNK_SIZE = 6
     dat = libpanda_py.ffi.new(f"uint8_t[{TINY_CHUNK_SIZE}]")
-    rx_len = self.lpp.comms_can_read(dat, TINY_CHUNK_SIZE)
+    rx_len = lpp.comms_can_read(dat, TINY_CHUNK_SIZE)
     assert rx_len == TINY_CHUNK_SIZE, "comms_can_read returned too little data"
 
     _, overflow = unpack_can_buffer(bytes(dat))
     assert len(overflow) > 0, "overflow buffer should not be empty"
 
     # reset the comms to clear the overflow buffer on the panda side
-    self.lpp.comms_can_reset()
+    lpp.comms_can_reset()
 
     # read a large chunk, which should now contain valid messages
     LARGE_CHUNK_SIZE = 512
     dat = libpanda_py.ffi.new(f"uint8_t[{LARGE_CHUNK_SIZE}]")
-    rx_len = self.lpp.comms_can_read(dat, LARGE_CHUNK_SIZE)
+    rx_len = lpp.comms_can_read(dat, LARGE_CHUNK_SIZE)
     assert rx_len == LARGE_CHUNK_SIZE, "comms_can_read returned too little data"
 
     msgs, _ = unpack_can_buffer(bytes(dat))
@@ -73,7 +77,11 @@ class TestPandaComms:
       assert m == test_msg, "message buffer should contain valid test messages"
 
   def test_comms_reset_tx(self):
-    self.lpp.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
+    lpp = libpanda_py.libpanda
+    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
+    lpp.comms_can_reset()
+
+    lpp.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
 
     # store some test messages in the queue
     test_msg = (0x100, b"test", 0)
@@ -81,18 +89,18 @@ class TestPandaComms:
 
     # write a small chunk such that we have some overflow
     TINY_CHUNK_SIZE = 6
-    self.lpp.comms_can_write(packed[0][:TINY_CHUNK_SIZE], TINY_CHUNK_SIZE)
+    lpp.comms_can_write(packed[0][:TINY_CHUNK_SIZE], TINY_CHUNK_SIZE)
 
     # reset the comms to clear the overflow buffer on the panda side
-    self.lpp.comms_can_reset()
+    lpp.comms_can_reset()
 
     # write a full valid chunk, which should now contain valid messages
-    self.lpp.comms_can_write(packed[1], len(packed[1]))
+    lpp.comms_can_write(packed[1], len(packed[1]))
 
     # read the messages from the queue and make sure they're valid
     queue_msgs = []
     pkt = libpanda_py.ffi.new('CANPacket_t *')
-    while self.lpp.can_pop(self.TX_QUEUES[0], pkt):
+    while lpp.can_pop(TX_QUEUES[0], pkt):
       queue_msgs.append(unpackage_can_msg(pkt))
 
     assert len(queue_msgs) > 0, "message buffer should not be empty"
@@ -101,7 +109,11 @@ class TestPandaComms:
 
 
   def test_can_send_usb(self, subtests):
-    self.lpp.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
+    lpp = libpanda_py.libpanda
+    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
+    lpp.comms_can_reset()
+
+    lpp.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
 
     for bus in range(3):
       with subtests.test(bus=bus):
@@ -113,18 +125,21 @@ class TestPandaComms:
           for buf in packed:
             for i in range(0, len(buf), CHUNK_SIZE):
               chunk_len = min(CHUNK_SIZE, len(buf) - i)
-              self.lpp.comms_can_write(buf[i:i+chunk_len], chunk_len)
+              lpp.comms_can_write(buf[i:i+chunk_len], chunk_len)
 
           # Check that they ended up in the right buffers
           queue_msgs = []
           pkt = libpanda_py.ffi.new('CANPacket_t *')
-          while self.lpp.can_pop(self.TX_QUEUES[bus], pkt):
+          while lpp.can_pop(TX_QUEUES[bus], pkt):
             queue_msgs.append(unpackage_can_msg(pkt))
 
           assert len(queue_msgs) == len(msgs)
           assert queue_msgs == msgs
 
   def test_can_receive_usb(self):
+    lpp = libpanda_py.libpanda
+    lpp.comms_can_reset()
+
     msgs = random_can_messages(50000)
     packets = [libpanda_py.make_CANPacket(m[0], m[2], m[1]) for m in msgs]
 
@@ -132,8 +147,8 @@ class TestPandaComms:
     overflow_buf = b""
     while len(packets) > 0:
       # Push into queue
-      while self.lpp.can_slots_empty(self.lpp.rx_q) > 0 and len(packets) > 0:
-        self.lpp.can_push(self.lpp.rx_q, packets.pop(0))
+      while lpp.can_slots_empty(lpp.rx_q) > 0 and len(packets) > 0:
+        lpp.can_push(lpp.rx_q, packets.pop(0))
 
       # Simulate USB bulk IN chunks
       MAX_TRANSFER_SIZE = 16384
@@ -142,7 +157,7 @@ class TestPandaComms:
         buf = b""
         while len(buf) < MAX_TRANSFER_SIZE:
           max_size = min(CHUNK_SIZE, MAX_TRANSFER_SIZE - len(buf))
-          rx_len = self.lpp.comms_can_read(dat, max_size)
+          rx_len = lpp.comms_can_read(dat, max_size)
           buf += bytes(dat[0:rx_len])
           if rx_len < max_size:
             break
