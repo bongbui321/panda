@@ -56,7 +56,7 @@ class TestPandaComms:
     lpp.comms_can_reset()
 
     self.my_id = id(lpp.tx1_q)
-    test_msg = (0x100, f"test", 0 )
+    test_msg = (0x100, b"test", 0 )
     for _ in range(100):
       can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1], lpp, ffi)
       lpp.can_push(lpp.rx_q, can_pkt_tx)
