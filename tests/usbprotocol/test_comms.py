@@ -126,7 +126,7 @@ class TestPandaComms:
 
   def test_can_receive_usb(self):
     msgs = random_can_messages(50000)
-    packets = [libpanda_py.make_CANPacket(m[0], m[2], m[1], lpp, ffi) for m in msgs]
+    packets = [libpanda_py.make_CANPacket(m[0], m[2], m[1]) for m in msgs]
 
     self.my_id_2 = id(lpp.tx1_q)
     rx_msgs = []
