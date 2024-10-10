@@ -25,7 +25,7 @@ def random_can_messages(n, bus=None):
 
 
 class TestPandaComms:
-  my_id = None
+  my_id = -1 
 
   def test_tx_queues(self):
     ffi = libpanda_py.gen_new_ffi()
@@ -55,6 +55,7 @@ class TestPandaComms:
     lpp.comms_can_reset()
 
     self.my_id = id(lpp.tx1_q)
+
     test_msg = (0x100, b"test2", 0)
     for _ in range(100):
       can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1], lpp, ffi)
