@@ -7,6 +7,7 @@ from panda.tests.libpanda.safety_helpers import PandaSafety, setup_safety_helper
 
 libpanda_dir = os.path.dirname(os.path.abspath(__file__))
 libpanda_fn = os.path.join(libpanda_dir, "libpanda.so")
+libpanda_fn2 = os.path.join(libpanda_dir, "libpanda2.so")
 
 def gen_new_ffi():
   ffi = FFI()

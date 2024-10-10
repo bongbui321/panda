@@ -149,7 +149,7 @@ class TestPandaComms:
 
   def test_can_receive_usb(self):
     ffi = libpanda_py.gen_new_ffi()
-    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
+    lpp = ffi.dlopen(libpanda_py.libpanda_fn2)
     lpp.comms_can_reset()
 
     msgs = random_can_messages(50000)

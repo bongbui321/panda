@@ -43,6 +43,7 @@ if GetOption('ubsan'):
 
 panda = env.SharedObject("panda.os", "panda.c")
 libpanda = env.SharedLibrary("libpanda.so", [panda])
+libpanda2 = env.SharedLibrary("libpanda2.so", [panda])
 
 if GetOption('coverage'):
   env.Append(
