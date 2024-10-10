@@ -5,7 +5,8 @@ from panda import Panda, DLC_TO_LEN, USBPACKET_MAX_SIZE, pack_can_buffer, unpack
 from panda.tests.libpanda import libpanda_py
 
 CHUNK_SIZE = USBPACKET_MAX_SIZE
-
+lpp = libpanda_py.libpanda
+TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
 
 def unpackage_can_msg(pkt):
   dat_len = DLC_TO_LEN[pkt[0].data_len_code]
@@ -25,21 +26,15 @@ def random_can_messages(n, bus=None):
 
 
 class TestPandaComms:
-  my_id_1 = -1 
-  my_id_2 = -1 
-
-  def test_tx_queues(self):
-    ffi = libpanda_py.gen_new_ffi()
-    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
-    #lpp = libpanda_py.libpanda
-    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
+  def setup_method(self):
     lpp.comms_can_reset()
 
+  def test_tx_queues(self):
     for bus in range(len(TX_QUEUES)):
       message = (0x100, b"test1", bus)
 
-      can_pkt_tx = libpanda_py.make_CANPacket(message[0], message[2], message[1], lpp, ffi)
-      can_pkt_rx = ffi.new('CANPacket_t *')
+      can_pkt_tx = libpanda_py.make_CANPacket(message[0], message[2], message[1])
+      can_pkt_rx = libpanda_py.ffi.new('CANPacket_t *')
 
       assert lpp.can_push(TX_QUEUES[bus], can_pkt_tx), "CAN push failed"
       assert lpp.can_pop(TX_QUEUES[bus], can_pkt_rx), "CAN pop failed"
@@ -49,22 +44,14 @@ class TestPandaComms:
   def test_comms_reset_rx(self):
     # store some test messages in the queue
 
-    ffi = libpanda_py.gen_new_ffi()
-    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
-    #lpp = libpanda_py.libpanda
-    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
-    lpp.comms_can_reset()
-
-    self.my_id_1 = id(lpp.tx1_q)
-
     test_msg = (0x100, b"test2", 0)
     for _ in range(100):
-      can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1], lpp, ffi)
+      can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1])
       lpp.can_push(lpp.rx_q, can_pkt_tx)
 
     # read a small chunk such that we have some overflow
     TINY_CHUNK_SIZE = 6
-    dat = ffi.new(f"uint8_t[{TINY_CHUNK_SIZE}]")
+    dat = libpanda_py.ffi.new(f"uint8_t[{TINY_CHUNK_SIZE}]")
     rx_len = lpp.comms_can_read(dat, TINY_CHUNK_SIZE)
     assert rx_len == TINY_CHUNK_SIZE, "comms_can_read returned too little data"
 
@@ -76,7 +63,7 @@ class TestPandaComms:
 
     # read a large chunk, which should now contain valid messages
     LARGE_CHUNK_SIZE = 512
-    dat = ffi.new(f"uint8_t[{LARGE_CHUNK_SIZE}]")
+    dat = libpanda_py.ffi.new(f"uint8_t[{LARGE_CHUNK_SIZE}]")
     rx_len = lpp.comms_can_read(dat, LARGE_CHUNK_SIZE)
     assert rx_len == LARGE_CHUNK_SIZE, "comms_can_read returned too little data"
 
@@ -86,11 +73,6 @@ class TestPandaComms:
       assert m == test_msg, "message buffer should contain valid test messages"
 
   def test_comms_reset_tx(self):
-    ffi = libpanda_py.gen_new_ffi()
-    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
-    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
-    lpp.comms_can_reset()
-
     lpp.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
 
     # store some test messages in the queue
@@ -109,7 +91,7 @@ class TestPandaComms:
 
     # read the messages from the queue and make sure they're valid
     queue_msgs = []
-    pkt = ffi.new('CANPacket_t *')
+    pkt = libpanda_py.ffi.new('CANPacket_t *')
     while lpp.can_pop(TX_QUEUES[0], pkt):
       queue_msgs.append(unpackage_can_msg(pkt))
 
@@ -119,11 +101,6 @@ class TestPandaComms:
 
 
   def test_can_send_usb(self, subtests):
-    ffi = libpanda_py.gen_new_ffi()
-    lpp = ffi.dlopen(libpanda_py.libpanda_fn)
-    TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
-    lpp.comms_can_reset()
-
     lpp.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
 
     for bus in range(3):
@@ -140,7 +117,7 @@ class TestPandaComms:
 
           # Check that they ended up in the right buffers
           queue_msgs = []
-          pkt = ffi.new('CANPacket_t *')
+          pkt = libpanda_py.ffi.new('CANPacket_t *')
           while lpp.can_pop(TX_QUEUES[bus], pkt):
             queue_msgs.append(unpackage_can_msg(pkt))
 
@@ -148,10 +125,6 @@ class TestPandaComms:
           assert queue_msgs == msgs
 
   def test_can_receive_usb(self):
-    ffi = libpanda_py.gen_new_ffi()
-    lpp = ffi.dlopen(libpanda_py.libpanda_fn2)
-    lpp.comms_can_reset()
-
     msgs = random_can_messages(50000)
     packets = [libpanda_py.make_CANPacket(m[0], m[2], m[1], lpp, ffi) for m in msgs]
 
@@ -165,7 +138,7 @@ class TestPandaComms:
 
       # Simulate USB bulk IN chunks
       MAX_TRANSFER_SIZE = 16384
-      dat = ffi.new(f"uint8_t[{CHUNK_SIZE}]")
+      dat = libpanda_py.ffi.new(f"uint8_t[{CHUNK_SIZE}]")
       while True:
         buf = b""
         while len(buf) < MAX_TRANSFER_SIZE:
@@ -180,5 +153,5 @@ class TestPandaComms:
         unpacked_msgs, overflow_buf = unpack_can_buffer(overflow_buf + buf)
         rx_msgs.extend(unpacked_msgs)
 
-    assert len(rx_msgs) == len(msgs), (self.my_id_1, self.my_id_2)
+    assert len(rx_msgs) == len(msgs)
     assert rx_msgs == msgs
