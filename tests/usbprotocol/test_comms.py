@@ -25,7 +25,7 @@ def random_can_messages(n, bus=None):
 
 
 class TestPandaComms:
-  def test_method(self):
+  def setup_method(self):
     self.my_id = None
 
   def test_tx_queues(self):
