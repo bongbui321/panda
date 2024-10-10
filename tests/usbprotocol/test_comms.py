@@ -6,6 +6,7 @@ from panda.tests.libpanda import libpanda_py
 
 CHUNK_SIZE = USBPACKET_MAX_SIZE
 lpp = libpanda_py.libpanda
+lpp2 = libpanda_py.libpanda2
 TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
 
 def unpackage_can_msg(pkt):
@@ -128,13 +129,12 @@ class TestPandaComms:
     msgs = random_can_messages(50000)
     packets = [libpanda_py.make_CANPacket(m[0], m[2], m[1]) for m in msgs]
 
-    self.my_id_2 = id(lpp.tx1_q)
     rx_msgs = []
     overflow_buf = b""
     while len(packets) > 0:
       # Push into queue
-      while lpp.can_slots_empty(lpp.rx_q) > 0 and len(packets) > 0:
-        lpp.can_push(lpp.rx_q, packets.pop(0))
+      while lpp2.can_slots_empty(lpp2.rx_q) > 0 and len(packets) > 0:
+        lpp2.can_push(lpp2.rx_q, packets.pop(0))
 
       # Simulate USB bulk IN chunks
       MAX_TRANSFER_SIZE = 16384
@@ -143,7 +143,7 @@ class TestPandaComms:
         buf = b""
         while len(buf) < MAX_TRANSFER_SIZE:
           max_size = min(CHUNK_SIZE, MAX_TRANSFER_SIZE - len(buf))
-          rx_len = lpp.comms_can_read(dat, max_size)
+          rx_len = lpp2.comms_can_read(dat, max_size)
           buf += bytes(dat[0:rx_len])
           if rx_len < max_size:
             break

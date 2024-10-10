@@ -81,6 +81,7 @@ class Panda(PandaSafety, Protocol):
 
 
 libpanda: Panda = ffi.dlopen(libpanda_fn)
+libpanda2: Panda = ffi.dlopen(libpanda_fn2)
 
 
 # helpers
