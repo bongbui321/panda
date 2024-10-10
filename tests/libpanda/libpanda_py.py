@@ -54,7 +54,6 @@ void comms_can_reset(void);
 uint32_t can_slots_empty(can_ring *q);
 """)
 
-ffi = gen_new_ffi()
 setup_safety_helpers(ffi)
 
 class CANPacket:
