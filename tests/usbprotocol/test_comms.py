@@ -25,8 +25,7 @@ def random_can_messages(n, bus=None):
 
 
 class TestPandaComms:
-  def setup_method(self):
-    self.my_id = None
+  my_id = None
 
   def test_tx_queues(self):
     ffi = libpanda_py.gen_new_ffi()
