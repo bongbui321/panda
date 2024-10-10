@@ -52,7 +52,7 @@ class TestPandaComms:
     TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
     lpp.comms_can_reset()
 
-    test_msg = (0x100, b"test", id(lpp.tx1_q))
+    test_msg = (0x100, fb"{id(lpp.tx1_q}[:8])", 0 )
     for _ in range(100):
       can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1], lpp, ffi)
       lpp.can_push(lpp.rx_q, can_pkt_tx)
@@ -174,5 +174,5 @@ class TestPandaComms:
         unpacked_msgs, overflow_buf = unpack_can_buffer(overflow_buf + buf)
         rx_msgs.extend(unpacked_msgs)
 
-    assert len(rx_msgs) == len(msgs), f" {rx_msgs}, {msgs}, {lpp.tx1_q}"
+    assert len(rx_msgs) == len(msgs), f"{rx_msgs}, {msgs}, {lpp.tx1_q}"
     assert rx_msgs == msgs
