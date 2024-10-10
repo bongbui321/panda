@@ -25,7 +25,8 @@ def random_can_messages(n, bus=None):
 
 
 class TestPandaComms:
-  my_id = -1 
+  my_id_1 = -1 
+  my_id_2 = -1 
 
   def test_tx_queues(self):
     ffi = libpanda_py.gen_new_ffi()
@@ -54,13 +55,12 @@ class TestPandaComms:
     TX_QUEUES = (lpp.tx1_q, lpp.tx2_q, lpp.tx3_q)
     lpp.comms_can_reset()
 
-    self.my_id = id(lpp.tx1_q)
+    self.my_id_1 = id(lpp.tx1_q)
 
     test_msg = (0x100, b"test2", 0)
     for _ in range(100):
       can_pkt_tx = libpanda_py.make_CANPacket(test_msg[0], test_msg[2], test_msg[1], lpp, ffi)
       lpp.can_push(lpp.rx_q, can_pkt_tx)
-    assert 1 == 0, self.my_id
 
     # read a small chunk such that we have some overflow
     TINY_CHUNK_SIZE = 6
@@ -155,6 +155,7 @@ class TestPandaComms:
     msgs = random_can_messages(50000)
     packets = [libpanda_py.make_CANPacket(m[0], m[2], m[1], lpp, ffi) for m in msgs]
 
+    self.my_id_2 = id(lpp.tx1_q)
     rx_msgs = []
     overflow_buf = b""
     while len(packets) > 0:
