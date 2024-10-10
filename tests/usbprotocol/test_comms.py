@@ -180,5 +180,5 @@ class TestPandaComms:
         unpacked_msgs, overflow_buf = unpack_can_buffer(overflow_buf + buf)
         rx_msgs.extend(unpacked_msgs)
 
-    assert len(rx_msgs) == len(msgs), (self.my_id, id(lpp.tx1_q))
+    assert len(rx_msgs) == len(msgs), (self.my_id_1, self.my_id_2)
     assert rx_msgs == msgs
