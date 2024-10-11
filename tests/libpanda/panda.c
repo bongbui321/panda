@@ -19,10 +19,10 @@ void can_tx_comms_resume_spi(void) { };
 #include "main_definitions.h"
 #include "drivers/can_common.h"
 
-can_ring rx_q_copy = can_rx_q;
-can_ring tx1_q_copy = can_tx1_q;
-can_ring tx2_q_copy = can_tx2_q;
-can_ring tx3_q_copy = can_tx3_q;
+const can_ring rx_q_copy = can_rx_q;
+const can_ring tx1_q_copy = can_tx1_q;
+const can_ring tx2_q_copy = can_tx2_q;
+const can_ring tx3_q_copy = can_tx3_q;
 
 can_ring *rx_q = &rx_q_copy;
 can_ring *tx1_q = &tx1_q_copy;
