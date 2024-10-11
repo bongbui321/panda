@@ -40,10 +40,10 @@ uint32_t fifo_size;
 CANPacket_t *elems;
 } can_ring;
 
-extern can_ring *rx_q;
-extern can_ring *tx1_q;
-extern can_ring *tx2_q;
-extern can_ring *tx3_q;
+extern can_ring rx_q;
+extern can_ring tx1_q;
+extern can_ring tx2_q;
+extern can_ring tx3_q;
 
 bool can_pop(can_ring *q, CANPacket_t *elem);
 bool can_push(can_ring *q, CANPacket_t *elem);
