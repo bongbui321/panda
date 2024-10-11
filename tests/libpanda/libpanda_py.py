@@ -7,20 +7,21 @@ from panda.tests.libpanda.safety_helpers import PandaSafety, setup_safety_helper
 
 libpanda_dir = os.path.dirname(os.path.abspath(__file__))
 libpanda_fn = os.path.join(libpanda_dir, "libpanda.so")
+libpanda_fn2 = os.path.join(libpanda_dir, "libpanda2.so")
 
 ffi = FFI()
 
 ffi.cdef("""
 typedef struct {
-  unsigned char reserved : 1;
-  unsigned char bus : 3;
-  unsigned char data_len_code : 4;
-  unsigned char rejected : 1;
-  unsigned char returned : 1;
-  unsigned char extended : 1;
-  unsigned int addr : 29;
-  unsigned char checksum;
-  unsigned char data[64];
+unsigned char reserved : 1;
+unsigned char bus : 3;
+unsigned char data_len_code : 4;
+unsigned char rejected : 1;
+unsigned char returned : 1;
+unsigned char extended : 1;
+unsigned int addr : 29;
+unsigned char checksum;
+unsigned char data[64];
 } CANPacket_t;
 """, packed=True)
 
@@ -33,16 +34,16 @@ int set_safety_hooks(uint16_t mode, uint16_t param);
 
 ffi.cdef("""
 typedef struct {
-  volatile uint32_t w_ptr;
-  volatile uint32_t r_ptr;
-  uint32_t fifo_size;
-  CANPacket_t *elems;
+volatile uint32_t w_ptr;
+volatile uint32_t r_ptr;
+uint32_t fifo_size;
+CANPacket_t *elems;
 } can_ring;
 
-extern can_ring *rx_q;
-extern can_ring *tx1_q;
-extern can_ring *tx2_q;
-extern can_ring *tx3_q;
+extern can_ring rx_q;
+extern can_ring tx1_q;
+extern can_ring tx2_q;
+extern can_ring tx3_q;
 
 bool can_pop(can_ring *q, CANPacket_t *elem);
 bool can_push(can_ring *q, CANPacket_t *elem);
@@ -80,6 +81,7 @@ class Panda(PandaSafety, Protocol):
 
 
 libpanda: Panda = ffi.dlopen(libpanda_fn)
+libpanda2: Panda = ffi.dlopen(libpanda_fn2)
 
 
 # helpers
