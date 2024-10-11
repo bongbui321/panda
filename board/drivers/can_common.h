@@ -18,7 +18,6 @@ bool can_loopback = false;
 
 // ********************* instantiate queues *********************
 #define can_buffer(x, size) \
-  static CANPacket_t elems_##x[size]; \
   extern can_ring can_##x; \
   can_ring can_##x = { .w_ptr = 0, .r_ptr = 0, .fifo_size = (size)};
 
