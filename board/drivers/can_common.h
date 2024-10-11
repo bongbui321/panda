@@ -20,7 +20,7 @@ bool can_loopback = false;
 #define can_buffer(x, size) \
   static CANPacket_t elems_##x[size]; \
   extern can_ring can_##x; \
-  can_ring can_##x = { .w_ptr = 0, .r_ptr = 0, .fifo_size = (size), .elems = (CANPacket_t *)&(elems_##x) };
+  can_ring can_##x = { .w_ptr = 0, .r_ptr = 0, .fifo_size = (size)};
 
 #define CAN_RX_BUFFER_SIZE 4096U
 #define CAN_TX_BUFFER_SIZE 416U
